@@ -8,8 +8,7 @@ from rest_framework_tracking.managers import PrefetchUserManager
 @python_2_unicode_compatible
 class BaseAPIRequestLog(models.Model):
     """ Logs Django rest framework API requests """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,
-                             blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     requested_at = models.DateTimeField(db_index=True)
     response_ms = models.PositiveIntegerField(default=0)
     path = models.CharField(max_length=200, db_index=True)
@@ -17,12 +16,12 @@ class BaseAPIRequestLog(models.Model):
     view_method = models.CharField(max_length=200, db_index=True)
     remote_addr = models.GenericIPAddressField()
     host = models.URLField()
-    method = models.CharField(max_length=10)
+    method = models.CharField(max_length=10, db_index=True)
     query_params = models.TextField(null=True, blank=True)
     data = models.TextField(null=True, blank=True)
     response = models.TextField(null=True, blank=True)
     errors = models.TextField(null=True, blank=True)
-    status_code = models.PositiveIntegerField(null=True, blank=True)
+    status_code = models.PositiveIntegerField(null=True, blank=True, db_index=True)
     objects = PrefetchUserManager()
 
     class Meta:
